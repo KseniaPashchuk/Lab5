@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab5.model
 {
-    class DepositAccount : BankAccount
+    public class DepositAccount : BankAccount
     {
         private double percent;
         private int period; // in monthes
@@ -15,7 +15,7 @@ namespace Lab5.model
         {
             IsReplenishmentAndWithdrawalAllowed = false;
         }
-        
+
         public DepositAccount(decimal moneyAmount, int accountNumber, string userName, int period, double percent) : base(moneyAmount, accountNumber, userName)
         {
             IsReplenishmentAndWithdrawalAllowed = false;

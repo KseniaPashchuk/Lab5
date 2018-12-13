@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab5.model
 {
-    class SavingAccount : BankAccount
+    public class SavingAccount : BankAccount
     {
         private double percentPerMonth;
 
@@ -50,6 +50,10 @@ namespace Lab5.model
 
         public override void WithdrawAmount(decimal amount)
         {
+            if (amount > MoneyAmount)
+            {
+                throw new InvalidOperationException("Sorry, you cannot withdraw more than you have");
+            }
             MoneyAmount -= amount;
         }
     }
