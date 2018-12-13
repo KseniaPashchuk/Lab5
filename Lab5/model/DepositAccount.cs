@@ -9,23 +9,54 @@ namespace Lab5.model
     class DepositAccount : BankAccount
     {
         private double percent;
-        private DateTime accountOpeningDate;
-        private int period;
+        private int period; // in monthes
 
-        public DepositAccount()
+        public DepositAccount() : base()
         {
+            IsReplenishmentAndWithdrawalAllowed = false;
         }
-
-        public DepositAccount(double percent, DateTime accountOpeningDate, int period)
+        
+        public DepositAccount(decimal moneyAmount, int accountNumber, string userName, int period, double percent) : base(moneyAmount, accountNumber, userName)
         {
+            IsReplenishmentAndWithdrawalAllowed = false;
             Percent = percent;
-            AccountOpeningDate = accountOpeningDate;
             Period = period;
-            IsContributionAllowed = false;
         }
 
         public double Percent { get => percent; set => percent = value; }
-        public DateTime AccountOpeningDate { get => accountOpeningDate; set => accountOpeningDate = value; }
         public int Period { get => period; set => period = value; }
+
+        public override bool Equals(object obj)
+        {
+            var account = obj as DepositAccount;
+            return account != null &&
+                   base.Equals(obj) &&
+                   Percent == account.Percent &&
+                   Period == account.Period;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1054278964;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + Percent.GetHashCode();
+            hashCode = hashCode * -1521134295 + Period.GetHashCode();
+            return hashCode;
+        }
+
+        public override void ReplenishAmount(decimal amount)
+        {
+            throw new NotSupportedException("For this type of account replenishment is not allowed");
+        }
+
+        public override void WithdrawAmount(decimal amount)
+        {
+            throw new NotSupportedException("For this type of account withdrawal is not allowed");
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 }

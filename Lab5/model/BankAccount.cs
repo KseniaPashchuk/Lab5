@@ -12,12 +12,14 @@ namespace Lab5.model
         private bool isBlocked;
         private int accountNumber;
         private string userName;
-        private bool isContributionAllowed;
+        private bool isReplenishmentAndWithdrawalAllowed;
+        private DateTime accountOpeningDate;
 
         public BankAccount()
         {
             MoneyAmount = 0;
             IsBlocked = false;
+            AccountOpeningDate = DateTime.Now;
         }
 
         public BankAccount(int accountNumber, string userName)
@@ -26,6 +28,7 @@ namespace Lab5.model
             IsBlocked = false;
             AccountNumber = accountNumber;
             UserName = userName;
+            AccountOpeningDate = DateTime.Now;
         }
 
         public BankAccount(decimal moneyAmount, int accountNumber, string userName)
@@ -34,28 +37,65 @@ namespace Lab5.model
             IsBlocked = false;
             AccountNumber = accountNumber;
             UserName = userName;
+            AccountOpeningDate = DateTime.Now;
         }
 
-        public BankAccount(bool isBlocked, int accountNumber, string userName)
-        {
-            MoneyAmount = 0;
-            IsBlocked = isBlocked;
-            AccountNumber = accountNumber;
-            UserName = userName;
-        }
-
-        public BankAccount(decimal moneyAmount, bool isBlocked, int accountNumber, string userName)
+        public BankAccount(decimal moneyAmount, int accountNumber, string userName, DateTime openindDate)
         {
             MoneyAmount = moneyAmount;
-            IsBlocked = isBlocked;
             AccountNumber = accountNumber;
             UserName = userName;
+            AccountOpeningDate = openindDate;
         }
 
         public decimal MoneyAmount { get => moneyAmount; set => moneyAmount = value; }
         public bool IsBlocked { get => isBlocked; set => isBlocked = value; }
         public int AccountNumber { get => accountNumber; set => accountNumber = value; }
         public string UserName { get => userName; set => userName = value; }
-        public bool IsContributionAllowed { get => isContributionAllowed; set => isContributionAllowed = value; }
+        public DateTime AccountOpeningDate { get => accountOpeningDate; set => accountOpeningDate = value; }
+        public bool IsReplenishmentAndWithdrawalAllowed { get => isReplenishmentAndWithdrawalAllowed; set => isReplenishmentAndWithdrawalAllowed = value; }
+
+
+        public abstract void ReplenishAmount(decimal amount);
+        public abstract void WithdrawAmount(decimal amount);
+
+        public void BlockAccount()
+        {
+            IsBlocked = true;
+        }
+
+        public void UnblockAccount()
+        {
+            IsBlocked = false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var account = obj as BankAccount;
+            return account != null &&
+                   MoneyAmount == account.MoneyAmount &&
+                   IsBlocked == account.IsBlocked &&
+                   AccountNumber == account.AccountNumber &&
+                   UserName == account.UserName &&
+                   AccountOpeningDate == account.AccountOpeningDate &&
+                   IsReplenishmentAndWithdrawalAllowed == account.IsReplenishmentAndWithdrawalAllowed;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -156944985;
+            hashCode = hashCode * -1521134295 + MoneyAmount.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsBlocked.GetHashCode();
+            hashCode = hashCode * -1521134295 + AccountNumber.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(UserName);
+            hashCode = hashCode * -1521134295 + AccountOpeningDate.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsReplenishmentAndWithdrawalAllowed.GetHashCode();
+            return hashCode;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 }

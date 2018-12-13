@@ -9,20 +9,48 @@ namespace Lab5.model
     class SavingAccount : BankAccount
     {
         private double percentPerMonth;
-        private DateTime accountOpeningDate;
 
         public SavingAccount()
         {
         }
 
-        public SavingAccount(double percentPerMonth, DateTime accountOpeningDate)
+        public SavingAccount(decimal moneyAmount, int accountNumber, string userName, double percentPerMonth) : base(moneyAmount, accountNumber, userName)
         {
+            IsReplenishmentAndWithdrawalAllowed = false;
             PercentPerMonth = percentPerMonth;
-            AccountOpeningDate = accountOpeningDate;
-            IsContributionAllowed = true;
         }
 
         public double PercentPerMonth { get => percentPerMonth; set => percentPerMonth = value; }
-        public DateTime AccountOpeningDate { get => accountOpeningDate; set => accountOpeningDate = value; }
+
+        public override bool Equals(object obj)
+        {
+            var account = obj as SavingAccount;
+            return account != null &&
+                   base.Equals(obj) &&
+                   PercentPerMonth == account.PercentPerMonth;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 2041399;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + PercentPerMonth.GetHashCode();
+            return hashCode;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public override void ReplenishAmount(decimal amount)
+        {
+            MoneyAmount += amount;
+        }
+
+        public override void WithdrawAmount(decimal amount)
+        {
+            MoneyAmount -= amount;
+        }
     }
 }
