@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Lab5.collection
 {
-    class UserAccounts
+    public class UserAccounts
     {
+        private String userName;
         private List<BankAccount> accounts;
 
         public UserAccounts()
@@ -17,34 +18,40 @@ namespace Lab5.collection
             this.Accounts = new List<BankAccount>();
         }
 
-        public UserAccounts(List<BankAccount> accounts)
+        public UserAccounts(String userName, List<BankAccount> accounts)
         {
+            this.UserName = userName;
             this.Accounts = accounts;
         }
 
         public List<BankAccount> Accounts { get => accounts; set => accounts = value; }
+        public string UserName { get => userName; set => userName = value; }
 
         public override bool Equals(object obj)
         {
             var collection = obj as UserAccounts;
             return collection != null &&
-                   Accounts.SequenceEqual(collection.Accounts);
+                   Accounts.SequenceEqual(collection.Accounts) &&
+                   UserName == collection.UserName;
         }
 
-        public override int GetHashCode()
-        {
-            return -687758171 + EqualityComparer<List<BankAccount>>.Default.GetHashCode(Accounts);
-        }
+       
 
         public override string ToString()
         {
             StringBuilder result = new StringBuilder();
+            result.Append("User name: " + UserName + ", Accounts: ");
             foreach (BankAccount acc in Accounts)
             {
                 result.Append(acc.ToString());
                 result.Append("/n");
             }
             return result.ToString();
+        }
+
+        public void AddAccount(BankAccount acc)
+        {
+            this.Accounts.Add(acc);
         }
 
         public decimal CalculateAllAccountsSum()
@@ -103,6 +110,14 @@ namespace Lab5.collection
             result.AddRange(Accounts);
             result.Sort(new AccountNumberComparer());
             return result;
-        }        
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1932969374;
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<BankAccount>>.Default.GetHashCode(Accounts);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(UserName);
+            return hashCode;
+        }
     }
 }

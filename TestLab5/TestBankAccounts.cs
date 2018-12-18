@@ -1,3 +1,4 @@
+using Lab5.collection;
 using Lab5.model;
 using NUnit.Framework;
 using System;
@@ -7,13 +8,22 @@ namespace Tests
     public class Tests
     {
         private BankAccount depositAccount;
-        private BankAccount savingAccount;
+        private BankAccount savingAccount1;
+        private BankAccount savingAccount2;
+        private UserAccounts accounts;
 
         [SetUp]
         public void Setup()
         {
             depositAccount = new DepositAccount(100, 16345, "Vasya", 2, 2.1);
-            savingAccount = new SavingAccount(100, 12345, "Vasya", 3);
+            savingAccount1 = new SavingAccount(100, 12345, "Vasya", 3);
+            savingAccount2 = new SavingAccount(100, 12340, "Vasya", 3);
+
+            accounts = new UserAccounts();
+            accounts.UserName = "Vasya";
+            accounts.AddAccount(depositAccount);
+            accounts.AddAccount(savingAccount1);
+            accounts.AddAccount(savingAccount2);
         }
 
         [Test]
@@ -55,9 +65,9 @@ namespace Tests
         [Test]
         public void Test_SavingWitdraw()
         {
-            savingAccount.WithdrawAmount(30);
+            savingAccount1.WithdrawAmount(30);
             decimal expectedAmount = 70;
-            Assert.AreEqual(expectedAmount, savingAccount.MoneyAmount);
+            Assert.AreEqual(expectedAmount, savingAccount1.MoneyAmount);
         }
 
         [Test]
@@ -65,7 +75,7 @@ namespace Tests
         {
             try
             {
-                savingAccount.WithdrawAmount(15000);
+                savingAccount1.WithdrawAmount(15000);
             }
             catch (InvalidOperationException ex)
             {
@@ -81,17 +91,33 @@ namespace Tests
         [Test]
         public void Test_SavingReplenishment()
         {
-            savingAccount.ReplenishAmount(30);
+            savingAccount1.ReplenishAmount(30);
             decimal expectedAmount = 130;
-            Assert.AreEqual(expectedAmount, savingAccount.MoneyAmount);
+            Assert.AreEqual(expectedAmount, savingAccount1.MoneyAmount);
         }
 
         [Test]
         public void Test_AccountBlocking()
         {
-            savingAccount.BlockAccount();
+            savingAccount1.BlockAccount();
             bool expectedBlocking = true;
-            Assert.AreEqual(expectedBlocking, savingAccount.IsBlocked);
+            Assert.AreEqual(expectedBlocking, savingAccount1.IsBlocked);
+        }
+
+        [Test]
+        public void Test_FindAccountByNumber()
+        {
+            BankAccount actualRresult = accounts.FindAccountByNumber(12340);
+            BankAccount expected = savingAccount2;
+            Assert.AreEqual(expected, actualRresult);
+        }
+
+        [Test]
+        public void Test_CalculateAllAccountsSum()
+        {
+            decimal actualRresult = accounts.CalculateAllAccountsSum();
+            decimal expected = 300;
+            Assert.AreEqual(expected, actualRresult);
         }
     }
 }

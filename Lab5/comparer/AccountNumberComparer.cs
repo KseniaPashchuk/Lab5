@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lab5.comparer
 {
-    class AccountNumberComparer : IComparer<BankAccount>
+    public class AccountNumberComparer : IComparer<BankAccount>
     {
         public int Compare(BankAccount x, BankAccount y)
         {
