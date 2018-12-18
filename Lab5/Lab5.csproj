@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="collection\UserAccounts.cs" />
+    <Compile Include="comparer\AccountNumberComparer.cs" />
     <Compile Include="model\BankAccount.cs" />
     <Compile Include="model\DepositAccount.cs" />
     <Compile Include="model\SavingAccount.cs" />

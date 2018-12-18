@@ -12,7 +12,7 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
-            depositAccount = new DepositAccount(100, 12345, "Vasya", 2, 2.1);
+            depositAccount = new DepositAccount(100, 16345, "Vasya", 2, 2.1);
             savingAccount = new SavingAccount(100, 12345, "Vasya", 3);
         }
 
